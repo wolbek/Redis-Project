@@ -8,22 +8,7 @@ redisClient.on('connect', () => {
 });
 
 
-const listKey = 'myList';
 
-export const pushValuesToRightEnd = async (values) => {
-    try {
-        const multi = redisClient.multi();
-
-        multi.rpush(listKey, values);
-
-
-        const result = await multi.exec();
-
-        console.log('Values pushed to the right end of the list. New list length:', result[0][1]);
-    } catch (err) {
-        console.error('Error pushing values to the list:', err);
-    }
-};
 
 export const rpopFromList = (listKey, callback) => {
     redisClient.rpop(listKey, (err, poppedElement) => {
@@ -63,14 +48,51 @@ export const lpopFromList = (listKey, callback) => {
 };
 
 export const lpushToList = (listKey, values, callback) => {
-    // values is an array of elements to be pushed to the left end of the list
-    redisClient.lpush(listKey, values, (err, newLength) => {
+
+    const elementsToPush = Array.isArray(values) ? values : [values];
+
+    redisClient.lpush(listKey, elementsToPush, (err, newLength) => {
       if (err) {
         console.error('Error pushing elements to the list:', err);
         callback(err, null);
       } else {
         console.log('Elements pushed to the left end of the list. New list length:', newLength);
-        callback(null, newLength);
+        const responseObject = {
+            newLength,
+            elementsToPush,
+          };
+        callback(null, responseObject );
+      }
+    });
+  };
+
+  export const rpushToList = (listKey, values, callback) => {
+    // values is an array of elements to be pushed to the left end of the list
+    const elementsToPush = Array.isArray(values) ? values : [values];
+    
+    redisClient.rpush(listKey, elementsToPush, (err, newLength) => {
+      if (err) {
+        console.error('Error pushing elements to the list:', err);
+        callback(err, null);
+      } else {
+        console.log('Elements pushed to the right end of the list. New list length:', newLength);
+        const responseObject = {
+            newLength,
+            elementsToPush,
+          };
+        callback(null, responseObject );
+      }
+    });
+  };
+
+  export const lposInList = (listKey, element, callback) => {
+    redisClient.lpos(listKey, element, (err, position) => {
+      if (err) {
+        console.error('Error getting position of the element in the list:', err);
+        callback(err, null);
+      } else {
+        console.log(`Position of element '${element}' in the list: ${position}`);
+        callback(null, position);
       }
     });
   };
