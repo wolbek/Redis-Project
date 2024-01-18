@@ -1,5 +1,11 @@
-const getAllHash = () => {
-  
+import fs from 'fs';
+
+import path from 'path';
+
+const p = path.join('data','storage.json');
+
+const storedData = () => {
+  return JSON.parse(fs.readFileSync(p));
 }
 
 export default class RedisHash {
@@ -7,44 +13,38 @@ export default class RedisHash {
       this.data = {};
     }
   
-    hset(key, fieldValues) {
-      
+    hset(key, fields) {
       if (!this.data[key]) {
         this.data[key] = {};
       }
   
-      let field='';
-      let value='';
-
-      for(let fieldValue in fieldValues){
-        field = fieldValue[0]
-        value = fieldValue[1]
-        this.data[key][field] = value;
-
+      for(let fieldName in fields){
+        this.data[key][fieldName] = fields[fieldName];
       }
 
-      this.save();
-      return res.status(200).json('Successfully saved.');
+      const allData = storedData();
+
+      if(!allData['hash']){
+        allData['hash'] ={};
+      }
+      allData['hash'][key]=this.data[key];
+      fs.writeFileSync(p, JSON.stringify(allData));
+      return 'Successfully saved.';
     }
   
     hget(key, field) {
-      if (this.data[key] && this.data[key][field] !== undefined) {
-        return res.status(200).json({value:this.data[key][field]});
+      const allData = storedData();
+      if (allData['hash'][key] && allData['hash'][key][field] !== undefined) {
+        return allData['hash'][key][field];
       }
   
-      return res.status(404).json({message:"Not found"}); // Field not found
+      return "Not found";
     }
   
-    hgetall(key) {
-      return res.status(200).json({values:this.data[key] || {}}); // Return the entire hash or an empty object if key not found
-    }
+    // hgetall(key) {
+    //   return res.status(200).json({values:this.data[key] || {}}); // Return the entire hash or an empty object if key not found
+    // }
     
-    save() {
-      const storage = fs.existsSync('storage.json') ? JSON.parse(fs.readFileSync('storage.json')) : [];
-      storage.push(this.data);
-      fs.writeFileSync('storage.json', JSON.stringify(storage, null, 2));
-    }
-
   }
   
   

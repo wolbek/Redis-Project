@@ -1,12 +1,12 @@
-import RedisHash from '../models/hash';
+import RedisHash from '../models/hash.js';
 
 const redisHash = new RedisHash();
 
-export const setHash= (req, res, next) => {
+export const setHashField= (req, res, next) => {
     try{
-        const {key, ...fieldValues} = req.body;
-        const response = redisHash.hset(key, fieldValues);
-        return response;
+        const {key, ...fields} = req.body;
+        const response = redisHash.hset(key, fields);
+        return res.status(200).json({message:response});
     }
     catch(err){
         console.log(err);
@@ -14,14 +14,18 @@ export const setHash= (req, res, next) => {
     }
 }
 
-export const getHash = async (req, res, next) => {
+export const getHashField = (req, res, next) => {
     try{
-        const {key, field} = req.body;
+        const {key, field} = req.params;
         const response = redisHash.hget(key, field);
-        return response;
+        return res.status(200).json({value:response});
     }
     catch(err){
         console.log(err);
         return res.status(500).json({message:err});
     }
 }
+
+// export const getHashAllFields = (req, res, next) => {
+
+// }
