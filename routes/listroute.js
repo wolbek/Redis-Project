@@ -1,134 +1,125 @@
-import express from 'express'
-// import { rpopFromList , getListLength , lpopFromList  } from "./controllers/list/lset.js";
-import { rpopFromList , getListLength , lpopFromList,lpushToList  , lposInList,rpushToList} from '../controllers/list/lset.js';
+import express from "express";
+import {
+  loadListsFromFile,
+  getListLength,
+  saveListsToFile,
+  lpushToList,
+  rpushToList,
+  rpopFromList,
+  lpopFromList,
+} from "../controllers/list/list_controller.js";
 
+const router = express.Router();
 
-const router = express.Router()
+//loading file from local storage to server startup
+loadListsFromFile();
 
-router.get('/len/:id', (req, res) => {
-    try {
-        const { id } = req.params;
-        const listKey = id;
+router.get("/len/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const listKey = id;
 
-        getListLength(listKey, (err, listLength) => {
-            if (err) {
-                res.status(500).send({ message: 'Error found while processing', error: err });
-            } else {
-                if (listLength === 0) {
-                    res.status(404).send({ message: 'No such list. Please enter correct list name/id' });
-                } else {
-                    res.status(200).json({ listLength });
-                }
-            }
-        });
-    } catch (err) {
-        res.status(500).json({ message: 'Error found', error: err });
-    }
-})
+    getListLength(listKey, (err, result) => {
+      if (err) {
+        res
+          .status(500)
+          .send({
+            message: "Error found while getting list length",
+            error: err,
+          });
+      } else {
+        res.status(200).json(result);
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error found", error: err });
+  }
+});
 
-router.get('/lpop/:id', (req, res) => {
-    try {
-        const { id } = req.params;
-        const listKey = id;
+router.post("/lpush/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const listKey = id;
+    const { value } = req.body;
 
-        lpopFromList(listKey, (err, poppedElement) => {
-            if (err) {
-                res.status(500).send({ message: 'Error found while popping element', error: err });
-            } else {
-                if (poppedElement === null) {
-                    res.status(404).send({ message: 'No elements to pop from the list' });
-                } else {
-                    res.status(200).json({ 'front poppedElement': poppedElement });
-                }
-            }
-        });
-    } catch (err) {
-        res.status(500).json({ message: 'Error found', error: err });
-    }
-})
+    lpushToList(listKey, value, (err, result) => {
+      if (err) {
+        res
+          .status(500)
+          .send({ message: "Error found while pushing elements", error: err });
+      } else {
+        res.status(200).json(result);
+        // Save the updated data to the file after each push
+        saveListsToFile();
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error found", error: err });
+  }
+});
 
-router.get('/rpop/:id', (req, res) => {
-    try {
-        const { id } = req.params;
-        const listKey = id;
+router.post("/rpush/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const listKey = id;
+    const { value } = req.body;
 
-        rpopFromList(listKey, (err, poppedElement) => {
-            if (err) {
-                res.status(500).send({ message: 'Error found while popping element', error: err });
-            } else {
-                if (poppedElement === null) {
-                    res.status(404).send({ message: 'No elements to pop from the list' });
-                } else {
-                    res.status(200).json({ 'Rear poppedElement': poppedElement });
-                }
-            }
-        });
-    } catch (err) {
-        res.status(500).json({ message: 'Error found', error: err });
-    }
-})
+    rpushToList(listKey, value, (err, result) => {
+      if (err) {
+        res
+          .status(500)
+          .send({ message: "Error found while pushing elements", error: err });
+      } else {
+        res.status(200).json(result);
+        // Save the updated data to the file after each push
+        saveListsToFile();
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error found", error: err });
+  }
+});
 
+router.get("/rpop/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const listKey = id;
 
-router.post('/lpush/:id', (req, res) => {
-    try {
-      const { id } = req.params;
-      const listKey = id;
-      const { value } = req.body;
-  
-  
-      lpushToList(listKey, value, (err, response_obj) => {
-        console.log("inside lpush")
-        if (err) {
-          res.status(500).send({ message: 'Error found while pushing elements', error: err });
-        } else {
+    rpopFromList(listKey, (err, result) => {
+      if (err) {
+        res
+          .status(500)
+          .send({ message: "Error found while popping element", error: err });
+      } else {
+        res.status(200).json(result);
+        // Save the updated data to the file after each pop
+        saveListsToFile();
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error found", error: err });
+  }
+});
 
-          res.status(200).json(response_obj);
-        }
-      });
-    } catch (err) {
-      res.status(500).json({ message: 'Error found', error: err });
-    }
-  });
+router.get("/lpop/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const listKey = id;
 
-  router.post('/rpush/:id', (req, res) => {
-    try {
-      const { id } = req.params;
-      const listKey = id;
-      const { value } = req.body;
-  
-  
-      rpushToList(listKey, value, (err, response_obj) => {
-        console.log("inside rpush")
-        if (err) {
-          res.status(500).send({ message: 'Error found while pushing elements', error: err });
-        } else {
+    lpopFromList(listKey, (err, result) => {
+      if (err) {
+        res
+          .status(500)
+          .send({ message: "Error found while popping element", error: err });
+      } else {
+        res.status(200).json(result);
+        // Save the updated data to the file after each pop
+        saveListsToFile();
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error found", error: err });
+  }
+});
 
-          res.status(200).json(response_obj);
-        }
-      });
-    } catch (err) {
-      res.status(500).json({ message: 'Error found', error: err });
-    }
-  });
-
-
-
-  router.get('/lpos/:id', (req, res) => {
-    try {
-      const { id } = req.params;
-      const listKey = id;
-      const { value } = req.body;
-  
-      lposInList(listKey, value, (err, position) => {
-        if (err) {
-          res.status(500).send({ message: 'Error found while getting position', error: err });
-        } else {
-          res.status(200).json({ position });
-        }
-      });
-    } catch (err) {
-      res.status(500).json({ message: 'Error found', error: err });
-    }
-  });
-
-export default router
+export default router;

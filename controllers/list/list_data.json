@@ -1,0 +1,12 @@
+{
+  "list1": [
+    "element3",
+    "element1",
+    [
+      "user5"
+    ]
+  ],
+  "list2": [
+    "element4"
+  ]
+}
