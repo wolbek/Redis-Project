@@ -1,31 +1,104 @@
-import RedisHash from '../models/hash.js';
+import fs from 'fs';
+import path from 'path';
 
-const redisHash = new RedisHash();
+const p = path.join('data','storage.json');
+
+const storedData = () => {
+  return JSON.parse(fs.readFileSync(p));
+};
 
 export const setHashField= (req, res, next) => {
     try{
         const {key, ...fields} = req.body;
-        const response = redisHash.hset(key, fields);
-        return res.status(200).json({message:response});
+
+        const allData = storedData();
+
+        if(!allData['hash']){
+            allData['hash'] ={};
+        }
+
+        for(let fieldName in fields){
+            allData['hash'][fieldName]=fields[fieldName];
+        }
+        
+        fs.writeFileSync(p, JSON.stringify(allData));
+        return res.status(200).json({message:'Successfully saved.'});
     }
     catch(err){
         console.log(err);
         return res.status(500).json({message:err});
     }
-}
+};
 
 export const getHashField = (req, res, next) => {
     try{
         const {key, field} = req.params;
-        const response = redisHash.hget(key, field);
-        return res.status(200).json({value:response});
+        const allData = storedData();
+        if (allData['hash'] && allData['hash'][key] && allData['hash'][key][field] !== undefined) {
+            return res.status(200).json({value:allData['hash'][key][field]});
+        }else{
+            return res.status(404).json({value:'Not Found'});
+        }
     }
     catch(err){
         console.log(err);
         return res.status(500).json({message:err});
     }
-}
+};
 
-// export const getHashAllFields = (req, res, next) => {
+export const getHashAllFields = (req, res, next) => {
+    try{
+        const key = req.params.key;
+        const allData = storedData();
+        if (allData['hash'] && allData['hash'][key] !== undefined){
+            return res.status(200).json({value:allData['hash'][key]});
+        }else{
+            return res.status(404).json({value:'Not Found'});
+        }
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({message:err});
+    }
+};
 
-// }
+export const deleteHashField = (req, res, next) => {
+    try{
+        const {key, field} = req.body;
+        const allData = storedData();
+
+        if (allData['hash'] && allData['hash'][key] && allData['hash'][key][field]!== undefined){
+           
+            const {[field]: deletedHashFieldValue, ...newHashFields} = allData['hash'][key];
+            allData['hash'][key] = newHashFields; 
+
+            fs.writeFileSync(p, JSON.stringify(allData));
+            return res.status(200).json({message:`${field}:${deletedHashFieldValue} Successfully deleted.`});
+        
+        }
+        else{
+            return res.status(404).json({value:'Not Found'});
+        }
+        
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({message:err});
+    }
+};
+
+export const findHashLength = (req, res, next) => {
+    try{
+        const key = req.params.key;
+        const allData = storedData();
+        if (allData['hash'] && allData['hash'][key] !== undefined){
+            return res.status(200).json({value:Object.keys(allData['hash'][key]).length});
+        }else{
+            return res.status(404).json({value:'Not Found'});
+        }
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({message:err});
+    }
+};
