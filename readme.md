@@ -17,7 +17,7 @@
 **GET request**: `http://localhost:3000/hash/hget/<hashName>/<fieldName>`
 
 ### To getHashAllFields:
-**GET request**: `http://localhost:3000/hash/hget/<hashName>`
+**GET request**: `http://localhost:3000/hash/hgetall/<hashName>`
 
 ### To getAllHash:
 **GET request**: `http://localhost:3000/hash/hgetallhash`

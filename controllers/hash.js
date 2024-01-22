@@ -17,16 +17,19 @@ export const setHashField= (req, res, next) => {
             allData['hash'] ={};
         }
 
+        if(!allData['hash'][key]){
+            allData['hash'][key] ={};
+        }
+
         for(let fieldName in fields){
-            allData['hash'][fieldName]=fields[fieldName];
+            allData['hash'][key][fieldName]=fields[fieldName];
         }
         
         fs.writeFileSync(p, JSON.stringify(allData));
         return res.status(200).json({message:'Successfully saved.'});
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 };
 
@@ -41,8 +44,7 @@ export const getHashField = (req, res, next) => {
         }
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 };
 
@@ -57,8 +59,7 @@ export const getHashAllFields = (req, res, next) => {
         }
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 };
 
@@ -73,8 +74,7 @@ export const getAllHash = (req, res, next) => {
         }
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 };
 
@@ -101,8 +101,7 @@ export const deleteHashField = (req, res, next) => {
         
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 };
 
@@ -117,7 +116,6 @@ export const findHashLength = (req, res, next) => {
         }
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 };

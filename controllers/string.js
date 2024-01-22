@@ -25,8 +25,7 @@ export const setString = (req, res, next) => {
         return res.status(200).json({message:'Successfully saved.'});
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 }
 
@@ -41,8 +40,7 @@ export const getString = (req, res, next) => {
         }
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 }
 
@@ -57,8 +55,7 @@ export const getAllString = (req, res, next) => {
         }
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 }
 
@@ -79,8 +76,7 @@ export const deleteString = (req, res, next) => {
         }
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 }
 
@@ -95,7 +91,6 @@ export const getStringLength = (req, res, next) => {
         }
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({message:err});
+        next(err);
     }
 }
