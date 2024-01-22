@@ -1,7 +1,7 @@
-## 1. HashSet:
+## 1. Hash:
 
 ### To setHashField:
-**POST request**: `http://localhost:8080/hash/hset`
+**POST request**: `http://localhost:3000/hash/hset`
 
 ```Request JSON example:```
 
@@ -14,16 +14,16 @@
 ```
 
 ### To getHashField:
-**GET request**: `http://localhost:8080/hash/hget/<hashName>/<fieldName>`
+**GET request**: `http://localhost:3000/hash/hget/<hashName>/<fieldName>`
 
 ### To getHashAllFields:
-**GET request**: `http://localhost:8080/hash/hget/<hashName>`
+**GET request**: `http://localhost:3000/hash/hget/<hashName>`
 
 ### To getAllHash:
-**GET request**: `http://localhost:8080/hash/hgetallhash`
+**GET request**: `http://localhost:3000/hash/hgetallhash`
 
 ### To deleteHashField:
-**POST request**: `http://localhost:8080/hash/hdel`
+**POST request**: `http://localhost:3000/hash/hdel`
 
 ```Request JSON example:```
 
@@ -35,13 +35,13 @@
 ```
 
 ### To findHashLength:
-**GET request**: `http://localhost:8080/hash/hlen/<hashName>`
+**GET request**: `http://localhost:3000/hash/hlen/<hashName>`
 
 
 ## 2. String:
 
 ### To setString:
-**POST request**: `http://localhost:8080/string/set`
+**POST request**: `http://localhost:3000/string/set`
 
 ```Request JSON example:```
 
@@ -52,13 +52,13 @@
 ```
 
 ### To getString:
-**GET request**: `http://localhost:8080/string/get/<stringName>`
+**GET request**: `http://localhost:3000/string/get/<stringName>`
 
 ### To getAllString:
-**GET request**: `http://localhost:8080/string/getall`
+**GET request**: `http://localhost:3000/string/getall`
 
 ### To deleteString:
-**POST request**: `http://localhost:8080/string/getdel`
+**POST request**: `http://localhost:3000/string/getdel`
 
 ```
 {
@@ -67,4 +67,4 @@
 ```
 
 ### To getStringLength:
-**GET request**: `http://localhost:8080/string/strlen/<stringName>`
+**GET request**: `http://localhost:3000/string/strlen/<stringName>`
