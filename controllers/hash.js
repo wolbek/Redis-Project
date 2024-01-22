@@ -35,9 +35,9 @@ export const getHashField = (req, res, next) => {
         const {key, field} = req.params;
         const allData = storedData();
         if (allData['hash'] && allData['hash'][key] && allData['hash'][key][field] !== undefined) {
-            return res.status(200).json({value:allData['hash'][key][field]});
+            return res.status(200).json({response:allData['hash'][key][field]});
         }else{
-            return res.status(404).json({value:'Not Found'});
+            return res.status(404).json({message:'Not Found'});
         }
     }
     catch(err){
@@ -51,9 +51,25 @@ export const getHashAllFields = (req, res, next) => {
         const key = req.params.key;
         const allData = storedData();
         if (allData['hash'] && allData['hash'][key] !== undefined){
-            return res.status(200).json({value:allData['hash'][key]});
+            return res.status(200).json({response:allData['hash'][key]});
         }else{
-            return res.status(404).json({value:'Not Found'});
+            return res.status(404).json({message:'Not Found'});
+        }
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({message:err});
+    }
+};
+
+export const getAllHash = (req, res, next) => {
+    try{
+        const key = req.params.key;
+        const allData = storedData();
+        if (allData['hash'] !== undefined){
+            return res.status(200).json({response:allData['hash']});
+        }else{
+            return res.status(404).json({message:'Not Found'});
         }
     }
     catch(err){
@@ -73,11 +89,14 @@ export const deleteHashField = (req, res, next) => {
             allData['hash'][key] = newHashFields; 
 
             fs.writeFileSync(p, JSON.stringify(allData));
-            return res.status(200).json({message:`${field}:${deletedHashFieldValue} Successfully deleted.`});
+            return res.status(200).json({
+                response:`Successfully deleted.`,
+                deletedValue: `${field}:${deletedHashFieldValue}`
+            });
         
         }
         else{
-            return res.status(404).json({value:'Not Found'});
+            return res.status(404).json({message:'Not Found'});
         }
         
     }
@@ -92,9 +111,9 @@ export const findHashLength = (req, res, next) => {
         const key = req.params.key;
         const allData = storedData();
         if (allData['hash'] && allData['hash'][key] !== undefined){
-            return res.status(200).json({value:Object.keys(allData['hash'][key]).length});
+            return res.status(200).json({response:Object.keys(allData['hash'][key]).length});
         }else{
-            return res.status(404).json({value:'Not Found'});
+            return res.status(404).json({message:'Not Found'});
         }
     }
     catch(err){
