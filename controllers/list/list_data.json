@@ -1,10 +1,7 @@
 {
   "list1": [
-    "element3",
-    "element1",
-    [
-      "user5"
-    ]
+    "first_val",
+    "element3"
   ],
   "list2": [
     "element4"

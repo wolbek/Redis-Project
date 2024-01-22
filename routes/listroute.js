@@ -14,29 +14,24 @@ const router = express.Router();
 //loading file from local storage to server startup
 loadListsFromFile();
 
-router.get("/len/:id", (req, res) => {
+router.get("/len/:id", (req, res,next) => {
   try {
     const { id } = req.params;
     const listKey = id;
 
     getListLength(listKey, (err, result) => {
       if (err) {
-        res
-          .status(500)
-          .send({
-            message: "Error found while getting list length",
-            error: err,
-          });
+        next(err)
       } else {
         res.status(200).json(result);
       }
     });
   } catch (err) {
-    res.status(500).json({ message: "Error found", error: err });
+    next(err)
   }
 });
 
-router.post("/lpush/:id", (req, res) => {
+router.post("/lpush/:id", (req, res, next) => {
   try {
     const { id } = req.params;
     const listKey = id;
@@ -44,9 +39,7 @@ router.post("/lpush/:id", (req, res) => {
 
     lpushToList(listKey, value, (err, result) => {
       if (err) {
-        res
-          .status(500)
-          .send({ message: "Error found while pushing elements", error: err });
+        next(err)
       } else {
         res.status(200).json(result);
         // Save the updated data to the file after each push
@@ -54,11 +47,11 @@ router.post("/lpush/:id", (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ message: "Error found", error: err });
+    next(err)
   }
 });
 
-router.post("/rpush/:id", (req, res) => {
+router.post("/rpush/:id", (req, res , next) => {
   try {
     const { id } = req.params;
     const listKey = id;
@@ -66,9 +59,7 @@ router.post("/rpush/:id", (req, res) => {
 
     rpushToList(listKey, value, (err, result) => {
       if (err) {
-        res
-          .status(500)
-          .send({ message: "Error found while pushing elements", error: err });
+        next(err)
       } else {
         res.status(200).json(result);
         // Save the updated data to the file after each push
@@ -76,20 +67,18 @@ router.post("/rpush/:id", (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ message: "Error found", error: err });
+    next(err)
   }
 });
 
-router.get("/rpop/:id", (req, res) => {
+router.get("/rpop/:id", (req, res, next) => {
   try {
     const { id } = req.params;
     const listKey = id;
 
     rpopFromList(listKey, (err, result) => {
       if (err) {
-        res
-          .status(500)
-          .send({ message: "Error found while popping element", error: err });
+        next(err)
       } else {
         res.status(200).json(result);
         // Save the updated data to the file after each pop
@@ -97,20 +86,18 @@ router.get("/rpop/:id", (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ message: "Error found", error: err });
+    next(err)
   }
 });
 
-router.get("/lpop/:id", (req, res) => {
+router.get("/lpop/:id", (req, res,next) => {
   try {
     const { id } = req.params;
     const listKey = id;
 
     lpopFromList(listKey, (err, result) => {
       if (err) {
-        res
-          .status(500)
-          .send({ message: "Error found while popping element", error: err });
+        next(err)
       } else {
         res.status(200).json(result);
         // Save the updated data to the file after each pop
@@ -118,7 +105,7 @@ router.get("/lpop/:id", (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ message: "Error found", error: err });
+    next(err)
   }
 });
 
