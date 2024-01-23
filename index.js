@@ -10,6 +10,18 @@ app.use(express.json());
 app.use('/list' , listrouter)
 app.use('/set' ,  setroute)
 
+app.use((err,req,res,next)=>{
+    const msg = err.message || "internal-server-error"
+    const statuscode = err.statuscode || 505
+    
+    res.status(statuscode).json({
+      success : false,
+      statuscode,
+      msg
+    })
+  })
+
+
 
 
 app.listen(3000, ()=>{
