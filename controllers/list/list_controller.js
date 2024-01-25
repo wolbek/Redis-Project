@@ -102,10 +102,12 @@ export const saveListsToFile = () => {
 export const getListLength = (listKey, callback) => {
   try {
     if (!listsData[listKey]) {
-      callback(null, { listLength: 0 });
+      const resp_obj = "listkey not present in list"
+      callback(null, resp_obj,401);
     } else {
       const listLength = listsData[listKey].length;
-      callback(null, { listLength });
+      
+      callback(null, { listLength } , 200);
     }
   } catch (err) {
     callback(err, null);
