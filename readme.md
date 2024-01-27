@@ -7,9 +7,11 @@
 
 ```
 {
-    "key":"hash1",
-    "field1":"value1",
-    "field2":"value2"
+    "hash1":{
+        "field1":"value1",
+        "field2":"value2",
+        "field3":"value3"
+    }
 }
 ```
 
@@ -30,7 +32,7 @@
 ```
 {
     "key":"hash1",
-    "field":"field1"
+    "fields":["field1","field2"]
 }
 ```
 
