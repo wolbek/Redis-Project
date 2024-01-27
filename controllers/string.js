@@ -1,94 +1,50 @@
-import fs from 'fs';
-import path from 'path';
+import RedisString from "../models/string.js";
 
-const p = path.join('data','storage.json');
+const string = new RedisString();
 
-const storedData = () => {
-  return JSON.parse(fs.readFileSync(p));
-}
-
-export const setString = (req, res, next) => {
+export const setString = async (req, res, next) => {
     try{
-        const field = req.body;
+        const key = Object.keys(req.body)[0];
+        const value = req.body[key];
+        const response = await string.set(key, value); 
 
-        const allData = storedData();
-
-        if(allData['string']===undefined){
-            allData['string'] = {};
-        }
-
-        for(let string in field){
-            allData['string'][string]=field[string];
-        }
-
-        fs.writeFileSync(p, JSON.stringify(allData));
-        return res.status(200).json({message:'Successfully saved.'});
+        return res.status(200).json({response:response});
     }
     catch(err){
         next(err);
     }
 }
 
-export const getString = (req, res, next) => {
+export const getString = async (req, res, next) => {
     try{
         const key = req.params.key;
-        const allData = storedData();
-        if (allData['string'] && allData['string'][key] !== undefined) {
-            return res.status(200).json({response:allData['string'][key]});
-        } else{
-            return res.status(404).json({message:'Not Found'});
-        }
+        const response = await string.get(key); 
+
+        return res.status(200).json({response:response});
     }
     catch(err){
         next(err);
     }
 }
 
-export const getAllString = (req, res, next) => {
-    try{
-        const key = req.params.key;
-        const allData = storedData();
-        if (allData['string'] !== undefined) {
-            return res.status(200).json({response:allData['string']});
-        }else{
-            return res.status(404).json({message:'Not Found'});
-        }
-    }
-    catch(err){
-        next(err);
-    }
-}
-
-export const deleteString = (req, res, next) => {
+export const deleteString = async (req, res, next) => {
     try{
         const key = req.body.key;
-        const allData = storedData();
-        if (allData['string'] && allData['string'][key] !== undefined) {
-            const {[key]:deletedStringValue, ...newData} = allData['string'];
-            allData['string'] = newData;
-            fs.writeFileSync(p, JSON.stringify(allData));
-            return res.status(200).json({
-                response:`Successfully deleted.`,
-                deletedValue: deletedStringValue
-            });
-        } else{
-            return res.status(404).json({message:'Not Found'});
-        }
+        const response = await string.getdel(key); 
+
+        return res.status(200).json({response:response});
     }
     catch(err){
         next(err);
     }
 }
 
-export const getStringLength = (req, res, next) => {
+export const getStringLength = async (req, res, next) => {
     try{
         const key = req.params.key;
-        const allData = storedData();
-        if (allData['string'] && allData['string'][key] !== undefined) {
-            return res.status(200).json({response:allData['string'][key].length});
-        } else{
-            return res.status(404).json({message:'Not Found'});
-        }
+        const response = await string.strlen(key);
+
+        return res.status(200).json({response:response});
     }
     catch(err){
         next(err);

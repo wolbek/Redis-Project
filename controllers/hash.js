@@ -43,8 +43,6 @@ export const deleteHashField = async (req, res, next) => {
     try{
         const key = req.body.key;
         const fields = req.body.fields;
-        console.log(fields);
-        console.log(typeof(fields));
         const response = await hash.hdel(key, fields);
 
         return res.status(200).json({response:response});

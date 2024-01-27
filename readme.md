@@ -21,9 +21,6 @@
 ### To getHashAllFields:
 **GET request**: `http://localhost:3000/hash/hgetall/<hashName>`
 
-### To getAllHash:
-**GET request**: `http://localhost:3000/hash/hgetallhash`
-
 ### To deleteHashField:
 **POST request**: `http://localhost:3000/hash/hdel`
 
@@ -55,9 +52,6 @@
 
 ### To getString:
 **GET request**: `http://localhost:3000/string/get/<stringName>`
-
-### To getAllString:
-**GET request**: `http://localhost:3000/string/getall`
 
 ### To deleteString:
 **POST request**: `http://localhost:3000/string/getdel`
