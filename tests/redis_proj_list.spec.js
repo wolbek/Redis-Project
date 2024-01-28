@@ -19,7 +19,7 @@ test.describe.parallel("List Api Testing ", async () => {
 
     const response_body = JSON.parse(await response.text());
 
-    expect(response.status()).toBe(401);
+    expect(response.status()).toBe(400);
     expect(response_body).toBe("listkey not present in list");
   });
 
@@ -28,22 +28,27 @@ test.describe.parallel("List Api Testing ", async () => {
     request,
   }) => {
     const response = await request.post(`${baseurl}/list/lpush/list1`, {
-      value: "sixth_val",
+      data:{
+        value: "seventh_val"
+      }
     });
     const response_body = JSON.parse(await response.text());
 
-    expect(response.status()).toBe(200);
+    expect(response.status()).toBe(201);
     expect(response_body.message).toBe("Element added to leftmost side.");
   });
 
   //for rpush success , when value is empty
   test("POST REQUEST - Adding an empty element", async ({ request }) => {
     const response = await request.post(`${baseurl}/list/rpush/list1`, {
-      value: "",
+      data:{
+        value: ""
+      }
+      
     });
     const response_body = JSON.parse(await response.text());
     // console.log(response_body)
-    expect(response.status()).toBe(401);
+    expect(response.status()).toBe(400);
     expect(response_body.message).toBe("Value is absent");
   });
 
@@ -56,4 +61,6 @@ test.describe.parallel("List Api Testing ", async () => {
     expect(response.status()).toBe(201);
     expect(response_body.message).toBe("Element removed from leftmost side");
   });
+
+  
 });

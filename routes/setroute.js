@@ -4,9 +4,10 @@ import {
   smembersOfSet,
   loadSetsFromFile,
   sremFromSet,
-  smoveMember
+  smoveMember,
+  saveSetsToFile
 } from "../controllers/set/set_controller.js";
-import { saveSetsToFile } from "../controllers/set/set_controller.js";
+// import { saveSetsToFile } from "../controllers/set/set_controller.js";
 
 const router = express.Router();
 
@@ -27,7 +28,7 @@ router.post("/sadd/:id", (req, res,next) => {
         next(err)
       } else {
         res.status(status).json(result);
-        // saveSetsToFile()
+        saveSetsToFile()
       }
     });
   } catch (err) {
@@ -41,11 +42,11 @@ router.get("/smembers/:id", (req, res ,next) => {
     const { id } = req.params;
     const setKey = id;
 
-    smembersOfSet(setKey, (err, result) => {
+    smembersOfSet(setKey, (err, result,status) => {
       if (err) {
         next(err)
       } else {
-        res.status(200).json(result);
+        res.status(status).json(result);
       }
     });
   } catch (err) {
@@ -65,11 +66,11 @@ router.post("/srem/:id", (req, res,next) => {
       value = [value];
     }
 
-    sremFromSet(setKey, value, (err, result) => {
+    sremFromSet(setKey, value, (err, result,status) => {
       if (err) {
         next(err)
       } else {
-        res.status(200).json(result);
+        res.status(status).json(result);
         // Save the updated data to the file after each srem
         saveSetsToFile();
       }
@@ -85,11 +86,11 @@ router.post('/smove/:sourceSet/:destinationSet', (req, res,next) => {
     const { sourceSet, destinationSet } = req.params;
     const { member } = req.body;
 
-    smoveMember(sourceSet, destinationSet, member, (err, result) => {
+    smoveMember(sourceSet, destinationSet, member, (err, result,status) => {
       if (err) {
         next(err)
       } else {
-        res.status(200).json(result);
+        res.status(status).json(result);
       }
     });
   } catch (err) {

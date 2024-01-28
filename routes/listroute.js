@@ -42,11 +42,11 @@ router.post("/lpush/:id", (req, res, next) => {
       value = [value];
     }
 
-    lpushToList(listKey, value, (err, result) => {
+    lpushToList(listKey, value, (err, result, status) => {
       if (err) {
         next(err)
       } else {
-        res.status(200).json(result);
+        res.status(status).json(result);
         // Save the updated data to the file after each push
         saveListsToFile();
       }
@@ -85,11 +85,11 @@ router.get("/rpop/:id", (req, res, next) => {
     const { id } = req.params;
     const listKey = id;
 
-    rpopFromList(listKey, (err, result) => {
+    rpopFromList(listKey, (err, result,status) => {
       if (err) {
         next(err)
       } else {
-        res.status(200).json(result);
+        res.status(status).json(result);
         // Save the updated data to the file after each pop
         saveListsToFile();
       }

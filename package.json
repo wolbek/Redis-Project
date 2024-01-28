@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "list" : "npx playwright test redis_proj_list.spec.js --project=chromium",
+    "set" : "npx playwright test redis_proj_set.spec.js --project=chromium"
   },
   "author": "Akshay Aakash",
   "license": "ISC",

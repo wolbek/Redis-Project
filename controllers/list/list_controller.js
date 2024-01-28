@@ -14,14 +14,13 @@ export const lpushToList = (listKey, value, callback) => {
       listsData[listKey] = [];
     }
 
-    if (!value) {
-      callback(null, { message: "Value is absent" }, 401);
-      return;
-    }
-
     // Push the value to the left end of the list
     value.forEach((element) => {
       console.log(element);
+      if (!element) {
+        callback(null, { message: "Value is absent" }, 400);
+        return;
+      }
       listsData[listKey].unshift(element);
     });
 
@@ -32,7 +31,7 @@ export const lpushToList = (listKey, value, callback) => {
       message: "Element added to leftmost side.",
       newLength,
       value,
-    });
+    },201);
   } catch (err) {
     callback(err, null);
   }
@@ -55,7 +54,7 @@ export const rpushToList = (listKey, value, callback) => {
     // Push the value to the left end of the list and checking if the value(array) is empty or not
     value.forEach((element) => {
       if (!element) {
-        callback(null, { message: "Value is absent" }, 401);
+        callback(null, { message: "Value is absent" }, 400);
         return;
       }
       console.log(element);
@@ -85,8 +84,8 @@ export const rpopFromList = (listKey, callback) => {
     const newLength = listsData[listKey].length;
     callback(null, {
       message: `Element removed from righmost side: ${removedElement}`,
-      newLength,
-    });
+      newLength, 
+    },201);
   } catch (err) {
     callback(err, null);
   }
@@ -96,7 +95,7 @@ export const rpopFromList = (listKey, callback) => {
 export const lpopFromList = (listKey, callback) => {
   try {
     if (!listsData[listKey] || listsData[listKey].length === 0) {
-      callback(null, { removedElement: null }, 401);
+      callback(null, { removedElement: null }, 400);
       return;
     }
 
@@ -139,7 +138,7 @@ export const getListLength = (listKey, callback) => {
   try {
     if (!listsData[listKey]) {
       const resp_obj = "listkey not present in list";
-      callback(null, resp_obj, 401);
+      callback(null, resp_obj, 400);
     } else {
       const listLength = listsData[listKey].length;
 
