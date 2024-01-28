@@ -3,38 +3,79 @@
 ### To setHashField:
 **POST request**: `http://localhost:3000/hash/hset`
 
-```Request JSON example:```
+```Request:```
 
 ```
 {
-    "hash1":{
-        "field1":"value1",
-        "field2":"value2",
-        "field3":"value3"
+    "<hash1>":{
+        "<field1>":"<value1>",
+        "<field2>":"<value2>",
+        "<field3>":"<value3>"
     }
+}
+```
+
+```Response:```
+```
+{
+    "message": "Successfully saved."
 }
 ```
 
 ### To getHashField:
 **GET request**: `http://localhost:3000/hash/hget/<hashName>/<fieldName>`
 
+```Response:```
+```
+{
+    "data": "<value>"
+}
+```
+
 ### To getHashAllFields:
 **GET request**: `http://localhost:3000/hash/hgetall/<hashName>`
+
+```Response:```
+```
+{
+    "data": {
+        "<field1>": "<value1>",
+        "<field2>": "<value2>",
+        "<field3>": "<value3>"
+    }
+}
+```
+
+
+### To findHashLength:
+**GET request**: `http://localhost:3000/hash/hlen/<hashName>`
+
+```Response:```
+```
+{
+    "data": <hashLength>
+}
+```
+
 
 ### To deleteHashField:
 **POST request**: `http://localhost:3000/hash/hdel`
 
-```Request JSON example:```
+```Request:```
 
 ```
 {
-    "key":"hash1",
-    "fields":["field1","field2"]
+    "key":"<hash1>",
+    "fields":["<field1>","<field2>"]
 }
 ```
 
-### To findHashLength:
-**GET request**: `http://localhost:3000/hash/hlen/<hashName>`
+```Response:```
+```
+{
+    "message": "Successfully deleted given fields."
+}
+```
 
 
 ## 2. String:
@@ -42,25 +83,56 @@
 ### To setString:
 **POST request**: `http://localhost:3000/string/set`
 
-```Request JSON example:```
+```Request:```
 
 ```
 {
-    "string1":"value1"
+    "<string1>":"<value1>"
+}
+```
+
+```Response:```
+```
+{
+    "message": "Successfully saved."
 }
 ```
 
 ### To getString:
 **GET request**: `http://localhost:3000/string/get/<stringName>`
 
-### To deleteString:
-**POST request**: `http://localhost:3000/string/getdel`
-
+```Response:```
 ```
 {
-	"key":"string1"
+    "data": "<value>"
 }
 ```
 
+
 ### To getStringLength:
 **GET request**: `http://localhost:3000/string/strlen/<stringName>`
+
+```Response:```
+```
+{
+    "data": <valueLength>
+}
+```
+
+
+### To deleteString:
+**POST request**: `http://localhost:3000/string/getdel`
+
+```Request:```
+```
+{
+	"key":"<string1>"
+}
+```
+
+```Response:```
+```
+{
+    "data": "<value>"
+}
+```

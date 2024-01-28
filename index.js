@@ -7,6 +7,13 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use((req,res,next)=>{
+    res.setHeader('Access-Control-Allow-Origin','*');
+    res.setHeader('Access-Control-Allow-Methods','GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers','Content-type');
+    next();
+})
+
 app.use('/hash',hashRoutes);
 app.use('/string',stringRoutes);
 
@@ -17,7 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    res.status(500).json({
+    res.status(err.statusCode || 500).json({
         message: err.message
     })
 })
