@@ -18,9 +18,9 @@ export const lpushToList = (listKey, value, callback) => {
     const newLength = listsData[listKey].length;
     // const resp_obj = {"Element added to leftmost side",newLength}
 
-    callback(null, { message: "Element added to leftmost side.", newLength });
+    callback(null, { message: "Element added to leftmost side.", newLength },200);
   } catch (err) {
-    callback(err, null);
+    callback(err, null,501);
   }
 };
 
@@ -102,12 +102,14 @@ export const saveListsToFile = () => {
 export const getListLength = (listKey, callback) => {
   try {
     if (!listsData[listKey]) {
-      callback(null, { listLength: 0 });
+      const resp_obj = "listkey not present in list"
+      callback(null, resp_obj,401);
     } else {
       const listLength = listsData[listKey].length;
-      callback(null, { listLength });
+      
+      callback(null, { listLength } , 200);
     }
   } catch (err) {
-    callback(err, null);
+    callback(err, null,501);
   }
 };

@@ -19,11 +19,12 @@ router.get("/len/:id", (req, res,next) => {
     const { id } = req.params;
     const listKey = id;
 
-    getListLength(listKey, (err, result) => {
+    getListLength(listKey, (err, result,status) => {
       if (err) {
         next(err)
       } else {
-        res.status(200).json(result);
+        // if(result)
+        res.status(status).json(result);
       }
     });
   } catch (err) {
@@ -37,11 +38,11 @@ router.post("/lpush/:id", (req, res, next) => {
     const listKey = id;
     const { value } = req.body;
 
-    lpushToList(listKey, value, (err, result) => {
+    lpushToList(listKey, value, (err, result,status) => {
       if (err) {
         next(err)
       } else {
-        res.status(200).json(result);
+        res.status(status).json(result);
         // Save the updated data to the file after each push
         saveListsToFile();
       }
