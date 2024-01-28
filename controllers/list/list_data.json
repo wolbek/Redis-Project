@@ -1,10 +1,18 @@
 {
   "list1": [
     null,
-    null,
-    null,
+    "sixth_val",
+    "fifth_val",
+    "fourth_val",
+    "third_val",
+    "secon_val",
     "first_val",
-    "element3"
+    "seventh_val",
+    "eight_val",
+    "nine_val",
+    "ten_val",
+    "eleven_val",
+    null
   ],
   "list2": [
     "element4"

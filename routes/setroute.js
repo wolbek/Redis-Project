@@ -21,12 +21,12 @@ router.post("/sadd/:id", (req, res,next) => {
       value = [value];
     }
 
-    saddToSet(setKey, value, (err, result) => {
+    saddToSet(setKey, value, (err, result,status) => {
       if (err) {
         console.log("inside the err loop saddtoset", err);
         next(err)
       } else {
-        res.status(200).json(result);
+        res.status(status).json(result);
         // saveSetsToFile()
       }
     });

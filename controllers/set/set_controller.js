@@ -48,13 +48,22 @@ export const saddToSet = (setKey, members, callback) => {
 
     //if there is already a set with the keyid, then add the members
     const existingSetArray = Array.from(setsData[setKey]);
-    const combinedArray = existingSetArray.concat(members);
-    setsData[setKey] = new Set(combinedArray);
+    // const combinedArray = existingSetArray.concat(members);
+    setsData[setKey] = new Set(existingSetArray);
+    members.forEach(element => {
+      if (!element) {
+        callback(null, { message: "Value cannot be null" }, 401);
+        return;
+      }
+      setsData[setKey].add(element)
+
+    });
+
     console.log(setsData);
 
     console.log("outside the members loop ");
 
-    callback(null, { message: "Members added to the set successfully" });
+    callback(null, { message: "Members added to the set successfully" },201);
     // Save the updated data to the file after each sadd
     saveSetsToFile();
   } catch (err) {
