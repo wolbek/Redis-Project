@@ -11,7 +11,7 @@ import {
 
 const router = express.Router();
 
-loadSetsFromFile();
+// loadSetsFromFile();
 router.post("/sadd/:id", (req, res,next) => {
   try {
     const { id } = req.params;
@@ -28,7 +28,7 @@ router.post("/sadd/:id", (req, res,next) => {
         next(err)
       } else {
         res.status(status).json(result);
-        saveSetsToFile()
+        // saveSetsToFile()
       }
     });
   } catch (err) {
@@ -72,7 +72,7 @@ router.post("/srem/:id", (req, res,next) => {
       } else {
         res.status(status).json(result);
         // Save the updated data to the file after each srem
-        saveSetsToFile();
+        // saveSetsToFile();
       }
     });
   } catch (err) {

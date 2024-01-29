@@ -12,7 +12,7 @@ import {
 const router = express.Router();
 
 //loading file from local storage to server startup
-loadListsFromFile();
+// loadListsFromFile();
 
 router.get("/len/:id", (req, res,next) => {
   try {
@@ -48,7 +48,7 @@ router.post("/lpush/:id", (req, res, next) => {
       } else {
         res.status(status).json(result);
         // Save the updated data to the file after each push
-        saveListsToFile();
+        // saveListsToFile();
       }
     });
   } catch (err) {
@@ -72,7 +72,7 @@ router.post("/rpush/:id", (req, res , next) => {
       } else {
         res.status(status).json(result);
         // Save the updated data to the file after each push
-        saveListsToFile();
+        // saveListsToFile();
       }
     });
   } catch (err) {
@@ -91,7 +91,7 @@ router.get("/rpop/:id", (req, res, next) => {
       } else {
         res.status(status).json(result);
         // Save the updated data to the file after each pop
-        saveListsToFile();
+        // saveListsToFile();
       }
     });
   } catch (err) {
@@ -110,7 +110,7 @@ router.get("/lpop/:id", (req, res,next) => {
       } else {
         res.status(status).json(result);
         // Save the updated data to the file after each pop
-        saveListsToFile();
+        // saveListsToFile();
       }
     });
   } catch (err) {
