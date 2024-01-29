@@ -106,13 +106,14 @@ export const sremFromSet = (setKey, members, callback) => {
     setsData[setKey] = new Set(setsData[setKey]);
 
     // Remove members from the set
-    members.forEach((member) => {
-      if(!setsData[setKey].has(member)){
-        callback(null , {message:'Member not present in set'},400)
-        return
+    for (const member of members) {
+      if (!setsData[setKey].has(member)) {
+        callback(null, { message: 'Member not present in set' }, 400);
+        return;
       }
       setsData[setKey].delete(member);
-    });
+    }
+    console.log("outside the foreach")
     const new_length = setsData[setKey].size;
 
     callback(null, {
@@ -138,7 +139,7 @@ export const smoveMember = (
 
     if (!setsData[sourceSetKey] || !setsData[destinationSetKey]) {
       console.log("Source or destination set not found");
-      callback(null, { message: "Source or destination set not found" });
+      callback(null, { message: "Source or destination set not found" },400);
       return;
     }
 
