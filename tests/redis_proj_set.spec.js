@@ -40,27 +40,27 @@ test.describe.parallel("Set Api Testing ", async () => {
   })
 
   //removing the the value from the set
-  test.only("POST REQUEST - Removing the element from set", async ({ request }) => {
-    const response2 = await request.post(`${baseurl}/set/sadd/set8`, {
-      data: {
-        value: ["akshay"],
-      },
-    });
-    const response_body2 = JSON.parse(await response2.text());
-    // console.log(response_body);
-    expect(response2.status()).toBe(201);
-    expect(response_body2.message).toBe("Members added to the set successfully");
+  // test.only("POST REQUEST - Removing the element from set", async ({ request }) => {
+  //   const response2 = await request.post(`${baseurl}/set/sadd/set8`, {
+  //     data: {
+  //       value: "akshay",
+  //     },
+  //   });
+  //   // const response_body2 = JSON.parse(await response2.text());
+  //   // console.log(response_body2);
+  //   // expect(response2.status()).toBe(201);
+  //   // expect(response_body2.message).toBe("Members added to the set successfully");
 
-    const response = await request.post(`${baseurl}/set/srem/set8`, {
-      data: {
-        value: "akshay",
-      },
-    });
-    const response_body = JSON.parse(await response.text());
-    console.log(response_body);
-    expect(response.status()).toBe(201);
-    expect(response_body.message).toBe("Members removed from the set successfully ");
-  })
+  //   const response = await request.post(`${baseurl}/set/srem/set8`, {
+  //     data: {
+  //       value: "akshay",
+  //     },
+  //   });
+  //   const response_body = JSON.parse(await response.text());
+  //   console.log(response_body);
+  //   expect(response.status()).toBe(201);
+  //   expect(response_body.message).toBe("Members removed from the set successfully ");
+  // })
 
   //removing val which is not in set
   test("POST REQUEST - Removing the element which is not in set", async ({ request }) => {

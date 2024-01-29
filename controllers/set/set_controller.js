@@ -93,7 +93,7 @@ export const smembersOfSet = (setKey, callback) => {
 // Function to remove members from a set
 export const sremFromSet = (setKey, members, callback) => {
   try {
-    console.log("inside the sremFromSet");
+    console.log("inside the sremFromSet", members);
 
     if (!setsData[setKey]) {
       console.log("Set not found");
